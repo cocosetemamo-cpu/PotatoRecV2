@@ -7,10 +7,13 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <shellapi.h>
+#include <shlobj.h>
 #include <string>
 #include <sstream>
 #include <fstream>
 #include <filesystem>
+
+#pragma comment(lib, "shell32.lib")
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
@@ -144,10 +147,8 @@ public:
         } else {
             wcscpy_s(m_nid.szTip, L"PotatoRec - Idle (F9 to record)");
             if (!path.empty()) {
-                // Show balloon notification with output path
                 m_nid.uFlags |= NIF_INFO;
                 wcscpy_s(m_nid.szInfoTitle, L"Recording saved!");
-                // Trim path for display
                 std::wstring display = path;
                 if (display.length() > 60)
                     display = L"..." + display.substr(display.length() - 57);
@@ -157,8 +158,6 @@ public:
         }
         
         Shell_NotifyIconW(NIM_MODIFY, &m_nid);
-        
-        // Clear balloon flag after showing
         m_nid.uFlags &= ~NIF_INFO;
     }
     
@@ -166,17 +165,16 @@ public:
         HMENU hMenu = CreatePopupMenu();
         
         if (m_recording) {
-            AppendMenuW(hMenu, MF_STRING, MENU_STOP,  L"⏹ Stop Recording (F9)");
-            AppendMenuW(hMenu, MF_GRAYED, MENU_START, L"▶ Start Recording");
+            AppendMenuW(hMenu, MF_STRING, MENU_STOP,  L"Stop Recording (F9)");
+            AppendMenuW(hMenu, MF_GRAYED, MENU_START, L"Start Recording");
         } else {
-            AppendMenuW(hMenu, MF_GRAYED, MENU_STOP,  L"⏹ Stop Recording");
-            AppendMenuW(hMenu, MF_STRING, MENU_START, L"▶ Start Recording (F9)");
+            AppendMenuW(hMenu, MF_GRAYED, MENU_STOP,  L"Stop Recording");
+            AppendMenuW(hMenu, MF_STRING, MENU_START, L"Start Recording (F9)");
         }
         
         AppendMenuW(hMenu, MF_SEPARATOR, 0, nullptr);
         AppendMenuW(hMenu, MF_STRING, MENU_EXIT, L"Exit PotatoRec");
         
-        // Show at cursor
         POINT pt;
         GetCursorPos(&pt);
         SetForegroundWindow(hwnd);
