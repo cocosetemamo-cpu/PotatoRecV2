@@ -1,0 +1,50 @@
+; PotatoRec Configuration
+; Delete this file to reset to defaults
+; Place next to PotatoRec.exe
+
+[Video]
+; Frames per second (1-60). Celeron recommended: 30
+FPS=30
+
+; Video bitrate in bytes/sec
+; 3000000 = 3 Mbps (good 720p)
+; 5000000 = 5 Mbps (good 1080p)
+; 1500000 = 1.5 Mbps (potato mode, small files)
+Bitrate=3000000
+
+; Scale output resolution (0 = native/no scale)
+; Set Width=1280 Height=720 to force 720p output (saves a LOT of CPU!)
+Width=0
+Height=0
+
+; Monitor index (0 = primary, 1 = second monitor, etc.)
+Monitor=0
+
+; Use hardware encoder (Intel QSV / AMD VCE / NVENC) - STRONGLY recommended
+; Set to 0 only if hardware encoding fails or produces corrupted output
+HWEncode=1
+
+; Show mouse cursor in recording (1=yes, 0=no)
+ShowCursor=1
+
+[Audio]
+; Capture audio (1=yes, 0=no)
+Enable=1
+
+; Loopback = capture system audio (what you hear)
+; Set to 0 to capture microphone instead
+Loopback=1
+
+[Output]
+; Output directory (leave empty for Documents\PotatoRec)
+; Example: Dir=C:\Users\YourName\Videos\Recordings
+Dir=
+
+[Hotkey]
+; Virtual key code for record toggle
+; F9 = 0x78, F10 = 0x79, F11 = 0x7A, F12 = 0x7B
+Key=120
+
+; Modifier keys (bitmask): 0=none, 1=Alt, 2=Ctrl, 4=Shift, 8=Win
+; Example: Ctrl+F9 = Mod=2, Key=120
+Mod=0
