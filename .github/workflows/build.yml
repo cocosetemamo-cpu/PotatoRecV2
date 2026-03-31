@@ -1,0 +1,33 @@
+name: Build PotatoRec
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build (Windows x64)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Configure CMake
+        run: cmake -B build -G "Visual Studio 17 2022" -A x64
+
+      - name: Build
+        run: cmake --build build --config Release --parallel 4
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PotatoRec-x64
+          path: build/**/Release/PotatoRec.exe
+          retention-days: 30
